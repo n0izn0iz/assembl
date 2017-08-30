@@ -273,8 +273,12 @@ const Translations = {
         1: "Renseigner les questions",
         2: "Exporter les données"
       },
-      annotation: "Module à renseigner obligatoirement. Les champs * sont requis.",
-      themeNum: "Thématique %{index}",
+      discussion: {
+        0: 'Langues utilisées'
+      },
+      languageChoice: 'Sélection des langue a affichier',
+      annotation: 'Module à renseigner obligatoirement. Les champs * sont requis.',
+      themeNum: 'Thématique %{index}',
       ph: {
         title: "*Titre",
         quote: "Citation",
@@ -570,8 +574,12 @@ const Translations = {
         1: "Set questions",
         2: "Export data"
       },
-      annotation: "Module to be completed. * Fields are required.",
-      themeNum: "Theme %{index}",
+      discussion: {
+        0: 'Languages of the Discussion'
+      },
+      languageChoice: 'Sélection des langue a affichier',
+      annotation: 'Module to be completed. * Fields are required.',
+      themeNum: 'Theme %{index}',
       ph: {
         title: "*Title",
         quote: "Quote",
