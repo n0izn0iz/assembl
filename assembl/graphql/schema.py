@@ -1639,7 +1639,6 @@ class AddPostAttachment(graphene.Mutation):
                 mime_type=mime_type,
                 title=filename,
                 data=data)
-            import pdb;pdb.set_trace()
 
             attachment = models.PostAttachment(
                 document=document,
