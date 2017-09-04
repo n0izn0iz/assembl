@@ -11,22 +11,6 @@ mutation createPost(
   createPost(ideaId: $ideaId, subject: $subject, body: $body, parentId: $parentId, attachments: $attachments) {
     post {
       ...Post
-      ... on Post {
-        parentId
-        creationDate
-        sentimentCounts {
-          like
-          disagree
-          dontUnderstand
-          moreInfo
-        }
-        attachments {
-          id
-          title
-          externalUrl
-          mimeType
-        }
-      }
     }
   }
 }
