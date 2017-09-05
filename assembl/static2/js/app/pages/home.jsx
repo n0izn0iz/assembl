@@ -11,6 +11,8 @@ import Chatbot from '../components/home/chatbot';
 import Partners from '../components/home/partners';
 import ScrollOnePageButton from '../components/common/scrollOnePageButton';
 
+import MotionChatbot from '../components/debate/common/chatbot';
+
 class Home extends React.Component {
   constructor() {
     super();
@@ -49,6 +51,7 @@ class Home extends React.Component {
         <Contact />
         {debateData.chatbot && <Chatbot chatbot={debateData.chatbot} locale={locale} />}
         {debateData.partners && <Partners />}
+        <MotionChatbot />
       </div>
     );
   }
