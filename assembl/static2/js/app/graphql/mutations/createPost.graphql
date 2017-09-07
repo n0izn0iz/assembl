@@ -11,6 +11,11 @@ mutation createPost(
   createPost(ideaId: $ideaId, subject: $subject, body: $body, parentId: $parentId, attachments: $attachments) {
     post {
       ...Post
+      ... on Post {
+        # we need to retrieve parentId and creationDate which are not fetched in Post fragment
+        parentId
+        creationDate
+      }
     }
   }
 }
