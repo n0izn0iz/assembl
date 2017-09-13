@@ -30,6 +30,7 @@ from assembl.auth import P_DELETE_POST, P_DELETE_MY_POST
 from assembl.auth.util import get_permissions
 from assembl.lib.sqla_types import EmailString
 from assembl.lib.clean_input import sanitize_text, sanitize_html
+from assembl.auth.util import effective_userid
 from assembl import models
 from assembl.models.action import (
     SentimentOfPost,
@@ -79,7 +80,7 @@ class SecureObjectType(object):
         if result.discussion_id != discussion_id:
             raise HTTPUnauthorized()
 
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
         permissions = get_permissions(user_id, discussion_id)
         if not result.user_can(user_id, CrudPermissions.READ, permissions):
             raise HTTPUnauthorized()
@@ -673,7 +674,7 @@ class Question(SecureObjectType, SQLAlchemyObjectType):
         # then the remaining ones are in random order.
         # If random is False, return all the posts in creation_date desc order.
         if random:
-            user_id = context.authenticated_userid
+            user_id = effective_userid(context)
             if user_id is None:
                 first_post = None
             else:
@@ -905,7 +906,7 @@ class CreateIdea(graphene.Mutation):
         cls = models.Idea
         discussion_id = context.matchdict['discussion_id']
         discussion = models.Discussion.get(discussion_id)
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
 
         permissions = get_permissions(user_id, discussion_id)
         allowed = cls.user_can_cls(user_id, CrudPermissions.CREATE, permissions)
@@ -973,7 +974,7 @@ class CreateIdea(graphene.Mutation):
                     document=document,
                     idea=saobj,
                     discussion=discussion,
-                    creator_id=context.authenticated_userid,
+                    creator_id=effective_userid(context),
                     title=filename,
                     attachmentPurpose="EMBED_ATTACHMENT"
                 )
@@ -1012,7 +1013,7 @@ class CreateThematic(graphene.Mutation):
         cls = models.Thematic
         discussion_id = context.matchdict['discussion_id']
         discussion = models.Discussion.get(discussion_id)
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
 
         permissions = get_permissions(user_id, discussion_id)
         allowed = cls.user_can_cls(user_id, CrudPermissions.CREATE, permissions)
@@ -1104,7 +1105,7 @@ class CreateThematic(graphene.Mutation):
                     document=document,
                     idea=saobj,
                     discussion=discussion,
-                    creator_id=context.authenticated_userid,
+                    creator_id=effective_userid(context),
                     title=filename,
                     attachmentPurpose="EMBED_ATTACHMENT"
                 )
@@ -1146,7 +1147,7 @@ class UpdateThematic(graphene.Mutation):
         cls = models.Thematic
         discussion_id = context.matchdict['discussion_id']
         discussion = models.Discussion.get(discussion_id)
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
 
         thematic_id = args.get('id')
         id_ = int(Node.from_global_id(thematic_id)[1])
@@ -1224,7 +1225,7 @@ class UpdateThematic(graphene.Mutation):
                 attachment = models.IdeaAttachment(
                     document=document,
                     discussion=discussion,
-                    creator_id=context.authenticated_userid,
+                    creator_id=effective_userid(context),
                     title=filename,
                     attachmentPurpose="EMBED_ATTACHMENT"
                 )
@@ -1276,7 +1277,7 @@ class DeleteThematic(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         discussion_id = context.matchdict['discussion_id']
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
 
         thematic_id = args.get('thematic_id')
         thematic_id = int(Node.from_global_id(thematic_id)[1])
@@ -1305,7 +1306,7 @@ class CreatePost(graphene.Mutation):
     def mutate(root, args, context, info):
         discussion_id = context.matchdict['discussion_id']
 
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
         discussion = models.Discussion.get(discussion_id)
 
         idea_id = args.get('idea_id')
@@ -1408,7 +1409,7 @@ class UpdatePost(graphene.Mutation):
     def mutate(root, args, context, info):
         discussion_id = context.matchdict['discussion_id']
 
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
         discussion = models.Discussion.get(discussion_id)
 
         post_id = args.get('post_id')
@@ -1467,7 +1468,7 @@ class DeletePost(graphene.Mutation):
     def mutate(root, args, context, info):
         discussion_id = context.matchdict['discussion_id']
 
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
         discussion = models.Discussion.get(discussion_id)
 
         post_id = args.get('post_id')
@@ -1505,7 +1506,7 @@ class UndeletePost(graphene.Mutation):
     def mutate(root, args, context, info):
         discussion_id = context.matchdict['discussion_id']
 
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
         discussion = models.Discussion.get(discussion_id)
 
         post_id = args.get('post_id')
@@ -1537,7 +1538,7 @@ class AddSentiment(graphene.Mutation):
         discussion_id = context.matchdict['discussion_id']
         discussion = models.Discussion.get(discussion_id)
 
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
 
         post_id = args.get('post_id')
         post_id = int(Node.from_global_id(post_id)[1])
@@ -1578,7 +1579,7 @@ class DeleteSentiment(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         discussion_id = context.matchdict['discussion_id']
-        user_id = context.authenticated_userid or Everyone
+        user_id = effective_userid(context) or Everyone
 
         post_id = args.get('post_id')
         post_id = int(Node.from_global_id(post_id)[1])
