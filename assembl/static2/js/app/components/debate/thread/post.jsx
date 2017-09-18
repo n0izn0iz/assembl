@@ -155,7 +155,7 @@ class Post extends React.PureComponent {
       this.answerTextarea = el;
     };
     return (
-      <div className="posts" id={id}>
+      <div className="posts">
         <div className="box">
           <Row className="post-row">
             <Col xs={12} md={11} className="post-left">
@@ -182,15 +182,6 @@ class Post extends React.PureComponent {
               <h3 className="dark-title-3">
                 {modifiedSubject}
               </h3>
-              {/* <div>
-                <Link
-                  to={`${get('debate', { slug: 'ai-consultation', phase: 'thread' })}${get('theme', {
-                    themeId: idea.id
-                  })}/#UG9zdDoyMDc5`}
-                >
-                  LIEN TEST{' '}
-                </Link>
-              </div> */}
 
               <div
                 className={`body ${bodyMimeType === 'text/plain' ? 'pre-wrap' : ''}`}

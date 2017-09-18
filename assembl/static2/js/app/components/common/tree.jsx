@@ -105,6 +105,7 @@ class Child extends React.PureComponent {
 
   render() {
     const {
+      id,
       hidden,
       contentLocale,
       lang,
@@ -136,7 +137,7 @@ class Child extends React.PureComponent {
     const forwardProps = { ...this.props, numChildren: numChildren };
     delete forwardProps.children;
     return (
-      <div className={cssClasses()}>
+      <div className={cssClasses()} id={id}>
         <InnerComponent {...forwardProps} measureTreeHeight={this.resizeTreeHeight} />
         {numChildren > 0 ? this.renderToggleLink(expanded, level < 4) : null}
         {numChildren > 0
