@@ -67,7 +67,6 @@ class Post extends React.PureComponent {
       window.scrollTo({ top: txtareaOffset - this.answerTextarea.clientHeight, left: 0, behavior: 'smooth' });
     }, 200);
   };
-
   hideAnswerForm = () => {
     this.setState({ showAnswerForm: false }, this.props.measureTreeHeight);
   };
@@ -183,7 +182,7 @@ class Post extends React.PureComponent {
               <h3 className="dark-title-3">
                 {modifiedSubject}
               </h3>
-              <div>
+              {/* <div>
                 <Link
                   to={`${get('debate', { slug: 'ai-consultation', phase: 'thread' })}${get('theme', {
                     themeId: idea.id
@@ -191,7 +190,7 @@ class Post extends React.PureComponent {
                 >
                   LIEN TEST{' '}
                 </Link>
-              </div>
+              </div> */}
 
               <div
                 className={`body ${bodyMimeType === 'text/plain' ? 'pre-wrap' : ''}`}
