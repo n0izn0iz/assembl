@@ -30,6 +30,7 @@ from assembl.auth import P_DELETE_POST, P_DELETE_MY_POST
 from assembl.auth.util import get_permissions
 from assembl.lib.sqla_types import EmailString
 from assembl.lib.clean_input import sanitize_text, sanitize_html
+from assembl.lib.locale import strip_country
 from assembl import models
 from assembl.models.action import (
     SentimentOfPost,
@@ -37,6 +38,7 @@ from assembl.models.action import (
     DontUnderstandSentimentOfPost, MoreInfoSentimentOfPost)
 from assembl.models.auth import (
     LanguagePreferenceCollection, LanguagePreferenceCollectionWithDefault)
+from assembl.nlp.translation_service import DummyGoogleTranslationService
 from .types import SQLAlchemyInterface, SQLAlchemyUnion
 
 _ = TranslationStringFactory('assembl')
@@ -810,12 +812,18 @@ class IdeaUnion(SQLAlchemyUnion):
             return Idea
 
 
+class Locale(graphene.ObjectType):
+    locale_code = graphene.String(required=True)
+    label = graphene.String(required=True)
+
+
 class Query(graphene.ObjectType):
     node = Node.Field()
     root_idea = graphene.Field(IdeaUnion, identifier=graphene.String())
     ideas = graphene.List(Idea)
     thematics = graphene.List(Thematic, identifier=graphene.String(required=True))
     num_participants = graphene.Int()
+    locales = graphene.List(Locale, lang=graphene.String(required=True))
 
     def resolve_root_idea(self, args, context, info):
         discussion_id = context.matchdict['discussion_id']
@@ -854,6 +862,16 @@ class Query(graphene.ObjectType):
         discussion = models.Discussion.get(discussion_id)
         return discussion.get_participants_query(
             ids_only=True, include_readers=True).count()
+
+    def resolve_locales(self, args, context, info):
+        locales = DummyGoogleTranslationService.target_localesC()
+        target_locale = strip_country(models.Locale.get_or_create(args.get('lang')))
+        labels = models.LocaleLabel.names_of_locales_in_locale(
+            [strip_country(DummyGoogleTranslationService.asPosixLocale(loc)) for loc in locales],
+            target_locale)
+        return [Locale(locale_code=locale_code, label=label)
+                for locale_code, label in sorted(labels.items(),
+                                                 key=lambda entry: entry[1])]
 
 
 class VideoInput(graphene.InputObjectType):
