@@ -156,7 +156,7 @@ class Post extends React.PureComponent {
       this.answerTextarea = el;
     };
     return (
-      <div className="posts" id={id}>
+      <div className="posts">
         <div className="box">
           <Row className="post-row">
             <Col xs={12} md={11} className="post-left">
