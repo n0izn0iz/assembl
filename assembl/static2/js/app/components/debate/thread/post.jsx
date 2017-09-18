@@ -124,6 +124,7 @@ class Post extends React.PureComponent {
         {subject.replace('Re: ', '')}
       </span>
     );
+
     if (publicationState in DeletedPublicationStates) {
       return (
         <DeletedPost
@@ -182,6 +183,15 @@ class Post extends React.PureComponent {
               <h3 className="dark-title-3">
                 {modifiedSubject}
               </h3>
+              <div>
+                <Link
+                  to={`${get('debate', { slug: 'ai-consultation', phase: 'thread' })}${get('theme', {
+                    themeId: idea.id
+                  })}/#UG9zdDoyMDc5`}
+                >
+                  LIEN TEST{' '}
+                </Link>
+              </div>
 
               <div
                 className={`body ${bodyMimeType === 'text/plain' ? 'pre-wrap' : ''}`}
