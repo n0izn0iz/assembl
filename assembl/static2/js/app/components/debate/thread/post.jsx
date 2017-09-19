@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Translate } from 'react-redux-i18n';
-import { compose, graphql, withApollo } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Row, Col } from 'react-bootstrap';
 
 import { getDomElementOffset } from '../../../utils/globalFunctions';
@@ -263,4 +263,4 @@ const mapStateToProps = (state) => {
   return { globalContentLocale: state.contentLocale };
 };
 
-export default compose(connect(mapStateToProps), withContentLocale, graphql(PostQuery), withLoadingIndicator(), withApollo)(Post);
+export default compose(connect(mapStateToProps), withContentLocale, graphql(PostQuery), withLoadingIndicator())(Post);
