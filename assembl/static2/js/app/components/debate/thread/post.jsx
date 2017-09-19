@@ -91,7 +91,17 @@ class Post extends React.PureComponent {
       mySentiment,
       publicationState
     } = this.props.data.post;
-    const { lang, ideaId, refetchIdea, creationDate, fullLevel, numChildren, sentimentCounts } = this.props;
+    const {
+      lang,
+      ideaId,
+      refetchIdea,
+      creationDate,
+      fullLevel,
+      numChildren,
+      sentimentCounts,
+      routerParams,
+      debateData
+    } = this.props;
     // creationDate is retrieved by IdeaWithPosts query, not PostQuery
     let body;
     let subject;
@@ -216,6 +226,9 @@ class Post extends React.PureComponent {
                 sentimentCounts={sentimentCounts}
                 mySentiment={mySentiment}
                 numChildren={numChildren}
+                routerParams={routerParams}
+                debateData={debateData}
+                postSubject={subject}
               />
             </Col>
           </Row>

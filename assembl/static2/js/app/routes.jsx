@@ -48,7 +48,7 @@ const DebateChild = (props) => {
   case 'survey':
     return <Survey id={props.id} identifier={props.identifier} />;
   case 'thread':
-    return <Idea id={props.id} identifier={props.identifier} />;
+    return <Idea id={props.id} identifier={props.identifier} routerParams={props.params} />;
   case 'twoColumns':
     return <TwoColumns id={props.id} identifier={props.identifier} />;
   case 'tokenVote':
