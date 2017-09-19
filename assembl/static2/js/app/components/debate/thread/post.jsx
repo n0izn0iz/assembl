@@ -104,20 +104,19 @@ class Post extends React.PureComponent {
       fullLevel,
       numChildren,
       localContentLocale,
-      updateLocalContentLocale
+      updateLocalContentLocale,
+      originalLocale
     } = this.props;
     // creationDate is retrieved by IdeaWithPosts query, not PostQuery
 
     let body;
     let subject;
-    let originalBodyLocale;
     let originalBody;
     let originalSubject;
     if (bodyEntries.length > 1) {
       // first entry is the translated version, example localeCode "fr-x-mtfrom-en"
       // second entry is the original, example localeCode "en"
       body = this.state.showOriginal ? bodyEntries[1].value : bodyEntries[0].value;
-      originalBodyLocale = bodyEntries[1].localeCode;
       originalBody = bodyEntries[1].value;
     } else {
       // translation is not enabled or the message is already in the desired locale
@@ -188,12 +187,12 @@ class Post extends React.PureComponent {
                   locale={lang}
                   modified={modificationDate !== null}
                 />}
-              {originalBodyLocale
+              {originalLocale
                 ? <PostTranslate
                   id={id}
                   lang={lang}
                   showOriginal={this.state.showOriginal}
-                  originalBodyLocale={originalBodyLocale}
+                  originalBodyLocale={originalLocale}
                   toggle={() => {
                     return this.setState((state) => {
                       return { showOriginal: !state.showOriginal };
