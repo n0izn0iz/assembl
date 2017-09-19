@@ -46,9 +46,6 @@ class Post extends React.PureComponent {
 
   componentDidMount() {
     this.props.measureTreeHeight(400);
-    this.props.data.post.extracts.map((extract) => {
-      return console.log(extract);
-    });
   }
 
   componentDidUpdate(prevProps) {
